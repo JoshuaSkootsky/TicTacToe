@@ -4,24 +4,25 @@ document.getElementById('board').innerHTML = makeBoard(STATE)
 // make event listeners for clicks
 document.querySelector('body').addEventListener('click', score)
 
-// everything can be derived from this state
-
-// generate the board from a board state
-// board state can be an array [[,,][,,],[,,]]
+// @return an interpolated string template literal
 function makeBoard(state) {
+  const current = getCurrent(state);
+  console.log('current: ', current)
+  return `<tr> hello <td> ${current[0]} <td> <td> ${current[1]} <td> <td> ${current[2]} <td> </tr>`
+}
+// everything can be derived from this state
+function getCurrent(state) {
   const current = state[state.length - 1];
+  return current;
   
 }
 
 function initialState() {
 	// make an empty tic tac toe board
 	const board = [];
-	for (let i = 0; i < 3; i++) {
-	  const row = [];
-	  for (let j = 0; j < 3; j++) {
-	    row.push(' ');
-	  }
-	  board.push(row);
+	for (let i = 0; i < 9; i++) {
+	  
+	  board.push(' ');
 	}
 	return board;
 }
@@ -44,55 +45,24 @@ function score(evt) {
   }
 }
 
+// @param squares: string[]
+const calculateWinner = (squares) => {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
 
-
-
-// make a tic tac toe board 
-function makeRow() {
-    const boxes = document.createElement('tr');
-    for (let i = 0; i < 3; i++) {
-        const box = document.createElement('td')
-        boxes.appendChild(box);
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
     }
-
-    let result = boxes;
-
-    console.log(result);
-    return result;
-}
-  
-
-
-const game = makeGame();
-
-function makeGame() {
-  // some state here
-  const steps = [];
-
-  function isXNext() {
-    return steps.length % 2 === 0 ? true : false;
   }
-
-  function score(i) {makeRow(board);
-
-function makeRow(table) {
-    const boxes = document.createElement('tr');
-    for (let i = 0; i < len; i++) {
-        const box = document.createElement('td')
-        boxes.appendChild(box);
-    }
-    table.appendChild(boxes);
-}
-    const next = isXNext() ? 'X' : 'O';
-    const board = [... steps[steps.length - 1]];
-    board[i] = next;
-    steps.push(board);
-  }
-
-  // assign methods
-  steps.isXNext = isXNext;
-  steps.score = score;
-
-  return Object.freeze(steps);
-
-}
+  return false;
+};
