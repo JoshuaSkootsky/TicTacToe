@@ -1,7 +1,7 @@
 // keep game state and game logic seperate from HTML representation
 const STATE = [ initialState() ];
 let won = false;
-document.getElementById('board').innerHTML = makeBoard(STATE)
+makeBoard(STATE);
 
 // make event listeners for clicks
 document.querySelector('body').addEventListener('click', clickOnBox)
@@ -11,7 +11,8 @@ document.querySelector('body').addEventListener('click', clickOnBox)
 // @return an interpolated string template literal
 function makeBoard(state) {
   const current = getCurrent(state);
-  return `<div class="parent">
+
+  const board = `<div class="parent">
   <h2>Tic-Tac-Toe</h2>
   <div class="children">
     <div id="box_0" class="box">${current[0]}</div>
@@ -25,6 +26,7 @@ function makeBoard(state) {
     <div id="box_8" class="box">${current[8]}</div>
   </div>
 </div>`
+  document.getElementById('board').innerHTML = board;
 }
 // everything can be derived from this state
 function getCurrent(state) {
@@ -105,4 +107,10 @@ function score(board) {
     document.querySelector('h2').innerText = `${winner} is the winner!`
     won = true;
   }
+}
+
+function takeBack(STATE) {
+  if(STATE.length > 1) STATE.pop();
+  won = calculateWinner(getCurrent(STATE)) ? true : false;
+  makeBoard(STATE);
 }
