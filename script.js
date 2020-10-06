@@ -43,15 +43,8 @@ function initialState() {
 	return board;
 }
 
-
-
-function isEven(array) {
-  return array.length % 2 === 0 ? true : false;
-}
-
-
 function isXNext(state) {
-    return isEven(state)
+    return state.length % 2 === 0;
 }
 
 function clickOnBox(evt) {
