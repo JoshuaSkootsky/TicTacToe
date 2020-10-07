@@ -19,12 +19,12 @@ document.querySelector('body').addEventListener('click', clickOnBox)
 // @param state an array of arrays of the board states : string[][]
 // @return an interpolated string template literal
 function makeBoard(state) {
-  const current = getCurrent(state);
+  const currentState = getCurrent(state);
 
   const board = `<div class="parent">
   <h2>Tic-Tac-Toe</h2>
   <div class="children">
-    ${boxesMaker(state)}
+    ${boxesMaker(currentState)}
   </div>
 </div>`
 
