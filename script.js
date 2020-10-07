@@ -14,8 +14,6 @@ document.querySelector('body').addEventListener('click', clickOnBox)
 
 
 // this is the representation, with HTML, of the game state
-// for n x n the hard coded 3 needs to go
-// make it make as many boxes as there are squares in state
 // @param state an array of arrays of the board states : string[][]
 // @return an interpolated string template literal
 function makeBoard(state) {
@@ -24,7 +22,7 @@ function makeBoard(state) {
   const board = `<div class="parent">
   <h2>Tic-Tac-Toe</h2>
   <div class="children">
-    ${boxesMaker(currentState)}
+    ${boxesHTMLMaker(currentState)}
   </div>
 </div>`
 
@@ -35,10 +33,9 @@ function boxMaker(value, id) {
   return `<div id="box_${id}" class="box"> ${value} </div>`
 }
 
-function boxesMaker(array) {
-  const res = array.map((value, id) => boxMaker(value, id)).join('');
-  console.log(res);
-  return res;
+function boxesHTMLMaker(array) {
+  const boxesHTML = array.map((value, id) => boxMaker(value, id)).join('');
+  return boxesHTML;
 }
 
 // everything can be derived from this state
@@ -47,11 +44,12 @@ function getCurrent(state) {
   return current;
 }
 
-// for n x n the hard coded 3 needs to go
-function initialState() {
 	// make an empty tic tac toe board
+function initialState() {
+  // board size = n * n;
+  const SIZE = 3 * 3;
 	const board = [];
-	for (let i = 0; i < 9; i++) {
+	for (let i = 0; i < SIZE; i++) {
 	  board.push(' ');
 	}
 	return [ board ];
@@ -86,6 +84,7 @@ function clickOnBox(evt) {
 }
 
 // for n x n the hard coded __ needs to go
+// could do a kind of fancy search
 // @param squares: string[]
 function calculateWinner (squares) {
   const lines = [
