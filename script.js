@@ -76,7 +76,6 @@ function clickOnBox(evt) {
       nextBoard[id] = next;
       STATE.push(nextBoard);
       document.getElementById(evt.target.id).innerText = next;
-
       score(nextBoard);
     }
 
@@ -112,7 +111,7 @@ function calculateWinner (squares) {
 function score(board) {
   const winner = calculateWinner(board);
   if (winner === 'X' || winner === 'O') {
-    // prevent further clicks
+    // display the winner
     document.querySelector('h2').innerText = `${winner} is the winner!`
   }
 }
