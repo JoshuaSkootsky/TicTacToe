@@ -110,3 +110,51 @@ function verticalLineGen(N) {
 ```
 
 Okay that seems about right.
+
+```javascript
+function diagonalLineGen(N) {
+  const result = [];
+  // make left to right diagonal
+  const left = []
+  for (let i = 0; i < N * N; i += 1 + N) {
+    left.push(i);
+  }
+  // make right to left diagonal
+  const right = [];
+  for (let i = N - 1; i < N * N - 1; i += N - 1) {
+    right.push(i);
+  }
+  result.push(left, right);
+  return result;
+}
+
+> diagonalLineGen(3)
+[ [ 0, 4, 8 ], [ 2, 4, 6 ] ]
+
+> diagonalLineGen(4)
+[ [ 0, 5, 10, 15 ], [ 3, 6, 9, 12 ] ]
+
+```
+
+Okay so now I'll combine those three functions.
+
+```javascript
+function lineGen(N) {
+  const result = [... diagonalLineGen(N), ... verticalLineGen(N), ... horizontalLineGen(N) ]
+  return result;
+}
+
+> lineGen(3)
+[
+  [ 0, 4, 8 ],
+  [ 2, 4, 6 ],
+  [ 0, 3, 6 ],
+  [ 1, 4, 7 ],
+  [ 2, 5, 8 ],
+  [ 0, 1, 2 ],
+  [ 3, 4, 5 ],
+  [ 6, 7, 8 ]
+]
+```
+
+So, I think I've done it.
