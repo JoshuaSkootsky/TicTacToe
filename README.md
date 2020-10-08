@@ -140,7 +140,9 @@ Okay so now I'll combine those three functions.
 
 ```javascript
 function lineGen(N) {
-  const result = [... diagonalLineGen(N), ... verticalLineGen(N), ... horizontalLineGen(N) ]
+  const result = [... diagonalLineGen(N),
+                  ... verticalLineGen(N),
+                  ... horizontalLineGen(N) ]
   return result;
 }
 
@@ -158,3 +160,89 @@ function lineGen(N) {
 ```
 
 So, I think I've done it.
+
+TODO: 
+
+function calculateWinner (squares) {
+
+needs to take the lines from lineGen and forEach check to see if any of them all match with an X or an O.
+
+```javascript
+const lines = lineGen(3); // let's say N = 3
+
+/* OLD CODE:
+
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if ( (squares[a] === 'X' || squares[a] === 'O') 
+          && squares[a] === squares[b] 
+          && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return false;
+*/
+
+  // rewrite:
+  // squares in scope
+  let winner = false;
+  lines.forEach(line =>  {
+    if (line.every(e => squares[e] === 'O')) winner = 'O';
+    if (line.every(e => squares[e] ===  'X')) winner = 'X';
+  }
+  return winner;
+
+
+```
+So the new calculateWinner will depend on three functions, and look like this: 
+
+```javascript
+function calculateWinner (squares) {
+  const lines = lineGen(Math.sqrt(squares.length));
+ 
+  let winner = false;
+  lines.forEach(line =>  {
+    if (line.every(e => squares[e] === 'O')) winner = 'O';
+    if (line.every(e => squares[e] ===  'X')) winner = 'X';
+  });
+  return winner;
+};
+```
+
+This works. However, note something a little interesting - we're recomputing the lines every time we calculate the winner. Since this happens every move, and we aren't changing the size of the board, this isn't necessary. It'd be nice to precompute the lines. I put a console log into lineGen and saw that it was actually calculating the lines twice per move, since the game checks before each move to see if someone has already won, and checks after a move to see if it should display if someone won.
+
+To precompute the lines, one way to do this would be to make line generator aware of previous work that it did. I could memoize my line generator.
+
+```javascript
+function unmemolineGen(N) {
+  const result = [... diagonalLineGen(N),
+                  ... verticalLineGen(N),
+                  ... horizontalLineGen(N) ]
+  return result;
+}
+
+function memoize(cb) {
+  const memo = {};
+  return function memoized(n) {
+    if (memo[n] !== undefined) {
+      console.log('Reading memo...');
+      return memo[n];
+    }
+    else {
+      console.log('recalculating...');
+    } return memo[n] = cb(n);
+  }
+}
+
+const lineGen = memoize(unmemolineGen);
+
+>
+recalculating...
+Reading memo...
+Reading memo...
+Reading memo...
+Reading memo...
+Reading memo...
+Reading memo...
+```
+So it works, it isn't repeating work, and it's reading from the memoized cache. Great!
