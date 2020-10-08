@@ -72,4 +72,41 @@ function horizontalLineGen(N) {
 
 and hey, that works!
 
-Okay, let's generate the 
+```javascript
+> horizontalLineGen(4)
+[
+  [ 0, 1, 2, 3 ],
+  [ 4, 5, 6, 7 ],
+  [ 8, 9, 10, 11 ],
+  [ 12, 13, 14, 15 ]
+]
+```
+
+Okay, let's generate the vertical lines
+
+```javascript
+function verticalLineGen(N) {
+  const result = [];
+  for (let i = 0; i < N; i++) {
+    const line = [];
+    for (let j = i; j < N * N; j += N) {
+      line.push(j);
+    }
+    result.push(line);
+  }
+  return result;
+}
+
+> verticalLineGen(3)
+[ [ 0, 3, 6 ], [ 1, 4, 7 ], [ 2, 5, 8 ] ]
+
+> verticalLineGen(4)
+[
+  [ 0, 4, 8, 12 ],
+  [ 1, 5, 9, 13 ],
+  [ 2, 6, 10, 14 ],
+  [ 3, 7, 11, 15 ]
+]
+```
+
+Okay that seems about right.
