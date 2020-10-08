@@ -86,26 +86,14 @@ function clickOnBox(evt) {
 // could do a kind of fancy search
 // @param squares: string[]
 function calculateWinner (squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if ( (squares[a] === 'X' || squares[a] === 'O') 
-          && squares[a] === squares[b] 
-          && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return false;
+  const lines = lineGen(Math.sqrt(squares.length));
+ 
+  let winner = false;
+  lines.forEach(line =>  {
+    if (line.every(e => squares[e] === 'O')) winner = 'O';
+    if (line.every(e => squares[e] ===  'X')) winner = 'X';
+  });
+  return winner;
 };
 
 function score(board) {
@@ -120,3 +108,64 @@ function takeBack(STATE) {
   if(STATE.length > 1) STATE.pop();
   makeBoard(STATE);
 }
+
+function horizontalLineGen(N) {
+  const result = [];
+  for (let i = 0; i < N * N; i += N) {
+    const line = [];
+    for (let j = i; j < i + N; j++) {
+      const idx = j; // or indexedArray[j];
+      line.push(idx);
+    }
+    result.push(line);
+  }
+  return result;
+}
+
+function verticalLineGen(N) {
+  const result = [];
+  for (let i = 0; i < N; i++) {
+    const line = [];
+    for (let j = i; j < N * N; j += N) {
+      line.push(j);
+    }
+    result.push(line);
+  }
+  return result;
+}
+
+function diagonalLineGen(N) {
+  const result = [];
+  // make left to right diagonal
+  const left = []
+  for (let i = 0; i < N * N; i += 1 + N) {
+    left.push(i);
+  }
+  // make right to left diagonal
+  const right = [];
+  for (let i = N - 1; i < N * N - 1; i += N - 1) {
+    right.push(i);
+  }
+  result.push(left, right);
+  return result;
+}
+
+function unmemolineGen(N) {
+  const result = [... diagonalLineGen(N),
+                  ... verticalLineGen(N),
+                  ... horizontalLineGen(N) ]
+  return result;
+}
+
+function memoize(cb) {
+  const memo = {};
+  return function memoized(n) {
+    if (memo[n] !== undefined) {
+      return memo[n];
+    }
+    else {
+    } return memo[n] = cb(n);
+  }
+}
+
+const lineGen = memoize(unmemolineGen);
