@@ -163,9 +163,8 @@ function memoize(cb) {
     if (memo[n] !== undefined) {
       return memo[n];
     }
-    else {
-    } return memo[n] = cb(n);
+    return memo[n] = cb(n);
   }
 }
-
+// memoize line gen
 const lineGen = memoize(unmemolineGen);

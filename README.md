@@ -4,7 +4,7 @@ Check it out on my blog, [https://joshuaskootsky.com](https://joshuaskootsky.com
 
 [Part 1 explanation](https://www.joshuaskootsky.com/posts/tic-tac-toe/)
 
-[Part 2 coming soon!]
+[Part 2 , Tic Tac Toe generalized and memoized](https://www.joshuaskootsky.com/posts/tic-tac-toe-memoized/)
 
 # Win Condition
 
@@ -228,9 +228,8 @@ function memoize(cb) {
       console.log('Reading memo...');
       return memo[n];
     }
-    else {
-      console.log('recalculating...');
-    } return memo[n] = cb(n);
+    console.log('recalculating...');
+    return memo[n] = cb(n);
   }
 }
 
